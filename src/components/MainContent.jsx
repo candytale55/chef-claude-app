@@ -49,24 +49,24 @@ function IngredientsList() {
 
       {/* Conditional Rendering of the Ingredient list */}
 
-          {ingredients.filter(i => i.name.trim() !== "").length > 0 && (
+      {ingredients.filter(i => i.name.trim() !== "").length > 0 ? (
         <section>
 
-          {/* List of INGREDIENTS Section*/}  
+          {/* List of INGREDIENTS Section*/}
 
-              <h2>Ingredients on hand:</h2>
-              <ul className='ingredients-list'>{ingredientsListItems}</ul>
+          <h2>Ingredients on hand:</h2>
+          <ul className='ingredients-list'>{ingredientsListItems}</ul>
               
           
           {/* Get Recipe Section*/}
           <div className='get-recipe-container'>
-                <h3>Ready for a recipe?</h3>
+            <h3>Ready for a recipe?</h3>
             <p>Generate a recipe with your list of ingredients.</p>
             <button>Get a recipe</button>
           </div>
           {/*  // TODO: Fix the Ready for a recipe inline display */}
-        </section>
-          )} 
+        </section> ) : null }
+          
       
       
 
