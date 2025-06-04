@@ -47,7 +47,7 @@ function IngredientsList() {
       </form>
       
 
-      {/* Conditional Rendering of the Ingredient list */}
+      {/* Conditional Rendering of the Ingredient list - Until there's at least one ingredient */} 
 
       {ingredients.filter(i => i.name.trim() !== "").length > 0 ? (
         <section>
@@ -58,12 +58,19 @@ function IngredientsList() {
           <ul className='ingredients-list'>{ingredientsListItems}</ul>
               
           
-          {/* Get Recipe Section*/}
-          <div className='get-recipe-container'>
-            <h3>Ready for a recipe?</h3>
-            <p>Generate a recipe with your list of ingredients.</p>
-            <button>Get a recipe</button>
-          </div>
+          {/* Conditional Rendering of the Get Recipe Section - Until there's at least three ingredients */}
+          
+          {
+            ingredients.filter(i => i.name.trim() !== "").length > 2 ? (
+          
+            <div className='get-recipe-container'>
+              <h3>Ready for a recipe?</h3>
+              <p>Generate a recipe with your list of ingredients.</p>
+              <button>Get a recipe</button>
+            </div>) : null
+            
+          }
+
           {/*  // TODO: Fix the Ready for a recipe inline display */}
         </section> ) : null }
           
