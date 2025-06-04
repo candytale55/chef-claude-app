@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { capitalizeWord } from '../utils/capitalize'
 
 function IngredientsList() {
 
-  const [ingredients, setIngredients] = useState([""]);
+  const [ingredients, setIngredients] = useState([]);
   const [inputValue, setInputValue] = useState("");
   
 
@@ -12,17 +14,20 @@ function IngredientsList() {
 
     if (!inputValue.trim()) return; // Don't add empty strings
 
-    {/*UUID will be added here*/}
+    const newIngredient = {
+      id: uuidv4(),
+      name: inputValue.trim()
+    };
 
-    setIngredients(prev => [...prev, inputValue.trim()]);
-    setInputValue(""); // Clear input after adding
+    setIngredients(prev => [...prev, newIngredient]);
+    setInputValue("");
   }
 
-  //TODO - set better keys - ALSO: If user enters two of the same, tell the user and don't add it. 
+
   const ingredientsListItems = ingredients
-    .filter(ingredient => ingredient.trim() !== "")
+    .filter(ingredient => ingredient.name.trim() !== "")
     .map(ingredient => (
-      <li key={ingredient}>{ingredient}</li>
+      <li key={ingredient.id}>{capitalizeWord(ingredient.name)}</li>
     ));
 
   return (
@@ -41,10 +46,33 @@ function IngredientsList() {
         <button type="submit" >Add ingredient</button>
       </form>
       
-      {ingredients.filter(i => i.trim() !== "").length > 0 && (
-        <ul>{ingredientsListItems}</ul>
-      )}
-      // TODO - Check that this does not affect rendering (ul taking space even when empty)
+
+      {/* Conditional Rendering of the Ingredient list */}
+
+          {ingredients.filter(i => i.name.trim() !== "").length > 0 && (
+        <section>
+
+          {/* List of INGREDIENTS Section*/}  
+
+              <h2>Ingredients on hand:</h2>
+              <ul className='ingredients-list'>{ingredientsListItems}</ul>
+              
+          
+          {/* Get Recipe Section*/}
+          <div className='get-recipe-container'>
+                <h3>Ready for a recipe?</h3>
+            <p>Generate a recipe with your list of ingredients.</p>
+            <button>Get a recipe</button>
+          </div>
+          {/*  // TODO: Fix the Ready for a recipe inline display */}
+        </section>
+          )} 
+      
+      
+
+      
+
+
       
     </main>
   )
