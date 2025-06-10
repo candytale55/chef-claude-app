@@ -1,57 +1,46 @@
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid'; // Used to generate unique IDs for each ingredient
-import { capitalizeWord } from '../utils/capitalize'; // Utility function to capitalize ingredient names
+import { v4 as uuidv4 } from 'uuid'; // Generates unique IDs for each ingredient
 
-import Recipe from './Recipe';
+import ListIngredients from './IngredientsList'; // Component to display the ingredient list and recipe button
+import Recipe from './Recipe'; // Component to display a hardcoded recipe (used for testing)
 
-function IngredientsList() {
+export default function IngredientsList() {
 
-  // State to hold the list of ingredients
+  // State: holds the list of ingredients added by the user
   const [ingredients, setIngredients] = useState([]);
 
-  // State to manage the input field's value
+  // State: tracks the current value of the input field
   const [inputValue, setInputValue] = useState("");
 
-  // State to determine whether the recipe is shown
+  // State: determines whether the hardcoded recipe should be displayed
   const [recipeShown, setRecipeShown] = useState(false);
 
-
-  // Toggles the visibility of the hard-coded recipe (used for testing)
+  // Toggles the visibility of the recipe section
   function toggleRecipeShown() {
     setRecipeShown(prevShown => !prevShown);
   }
 
-
-  // Handles form submission to add an ingredient
+  // Handles the form submission when user adds a new ingredient
   function addIngredient(e) {
-    e.preventDefault(); // Prevent page reload on form submit
+    e.preventDefault(); // Prevents full page reload on form submit
 
-    if (!inputValue.trim()) return; // Avoid adding empty strings
+    if (!inputValue.trim()) return; // Do not add empty or whitespace-only ingredients
 
     const newIngredient = {
-      id: uuidv4(), // Generate a unique ID
-      name: inputValue.trim() // Trim and store the ingredient name
+      id: uuidv4(), // Unique identifier for the ingredient
+      name: inputValue.trim() // Trimmed ingredient name
     };
 
-    // Add the new ingredient to the existing list
+    // Add new ingredient to the existing list
     setIngredients(prev => [...prev, newIngredient]);
 
-    // Clear the input field
+    // Clear the input field after adding
     setInputValue("");
   }
 
-
-  // Create the list items for rendering the ingredient list
-  const ingredientsListItems = ingredients
-    .filter(ingredient => ingredient.name.trim() !== "") // Filter out empty names
-    .map(ingredient => (
-      <li key={ingredient.id}>{capitalizeWord(ingredient.name)}</li> // Capitalize each name
-    ));
-
   return (
     <main>
-
-      {/* Form to add a new ingredient */}
+      {/* === Ingredient Input Form === */}
       <form className='add-ingredient-form' onSubmit={addIngredient}>
         <label htmlFor='input-ingredient'></label>
         <input
@@ -61,42 +50,23 @@ function IngredientsList() {
           aria-label='Add ingredient'
           name='ingredient'
           value={inputValue}
-          onChange={e => setInputValue(e.target.value)} // Update input state on change
+          onChange={e => setInputValue(e.target.value)} // Update state as user types
         />
         <button type="submit">Add ingredient</button>
       </form>
 
-
-      {/* Show ingredients section only if there’s at least one non-empty ingredient */}
+      {/* === Show ListIngredients Section if at least 1 valid item exists === */}
       {ingredients.filter(i => i.name.trim() !== "").length > 0 ? (
-        <section>
-
-          {/* List of current ingredients */}
-          <h2>Ingredients on hand:</h2>
-          <ul className='ingredients-list'>{ingredientsListItems}</ul>
-
-          {/* Show 'Get a recipe' section only if there are 3 or more ingredients */}
-          {ingredients.filter(i => i.name.trim() !== "").length > 2 ? (
-            <div className='get-recipe-container'>
-              <h3>Ready for a recipe?</h3>
-              <p>Generate a recipe with your list of ingredients.</p>
-              <button onClick={toggleRecipeShown}>Get a recipe</button>
-            </div>
-          ) : null}
-
-          {/* // TODO: Fix the Ready for a recipe inline display */}
-        </section>
+        <ListIngredients
+          ingredients={ingredients}
+          toggleRecipeShown={toggleRecipeShown}
+        />
       ) : null}
 
-
-      {/* Hard-coded recipe section – only visible when `recipeShown` is true */}
-      {
-        recipeShown && (
-          <Recipe />
-        )
-      } 
+      {/* === Show Recipe Section if toggle is active === */}
+      {recipeShown && <Recipe />}
     </main>
   );
 }
 
-export default IngredientsList;
+

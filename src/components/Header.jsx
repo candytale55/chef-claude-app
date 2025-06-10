@@ -1,6 +1,6 @@
 import claudeLogo from '../assets/images/chef-claude-icon.png'
 
-function Header() {
+export default function Header() {
   return (
     <>
       <header>
@@ -12,4 +12,3 @@ function Header() {
   )
 }
 
-export default Header
