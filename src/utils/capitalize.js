@@ -1,4 +1,4 @@
 
-export function capitalizeWord(word) {
+export default function capitalizeWord(word) {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   }

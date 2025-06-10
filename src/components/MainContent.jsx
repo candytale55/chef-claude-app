@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // Used to generate unique IDs for each ingredient
-import { capitalizeWord } from '../utils/capitalize'; // Utility function to capitalize ingredient names
 
+import ListIngredients from './ListIngredients';
 import Recipe from './Recipe';
 
-function IngredientsList() {
+
+
+
+export default function IngredientsList() {
+
 
   // State to hold the list of ingredients
   const [ingredients, setIngredients] = useState([]);
@@ -41,14 +45,9 @@ function IngredientsList() {
   }
 
 
-  // Create the list items for rendering the ingredient list
-  const ingredientsListItems = ingredients
-    .filter(ingredient => ingredient.name.trim() !== "") // Filter out empty names
-    .map(ingredient => (
-      <li key={ingredient.id}>{capitalizeWord(ingredient.name)}</li> // Capitalize each name
-    ));
 
   return (
+
     <main>
 
       {/* Form to add a new ingredient */}
@@ -68,35 +67,20 @@ function IngredientsList() {
 
 
       {/* Show ingredients section only if there’s at least one non-empty ingredient */}
-      {ingredients.filter(i => i.name.trim() !== "").length > 0 ? (
-        <section>
+      {ingredients.filter(i => i.name.trim() !== "").length > 0 ? ( 
 
-          {/* List of current ingredients */}
-          <h2>Ingredients on hand:</h2>
-          <ul className='ingredients-list'>{ingredientsListItems}</ul>
-
-          {/* Show 'Get a recipe' section only if there are 3 or more ingredients */}
-          {ingredients.filter(i => i.name.trim() !== "").length > 2 ? (
-            <div className='get-recipe-container'>
-              <h3>Ready for a recipe?</h3>
-              <p>Generate a recipe with your list of ingredients.</p>
-              <button onClick={toggleRecipeShown}>Get a recipe</button>
-            </div>
-          ) : null}
-
-          {/* // TODO: Fix the Ready for a recipe inline display */}
-        </section>
+        <ListIngredients ingredients={ingredients} toggleRecipeShown={toggleRecipeShown} />
+        
       ) : null}
 
 
-      {/* Hard-coded recipe section – only visible when `recipeShown` is true */}
-      {
-        recipeShown && (
-          <Recipe />
-        )
+      {/* When `recipeShown` is true - show hard-coded recipe */}
+      { 
+        recipeShown && ( <Recipe />)
       } 
-    </main>
+        </main>
+        
   );
 }
 
-export default IngredientsList;
+
