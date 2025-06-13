@@ -16,7 +16,7 @@ You are an assistant that receives a list of ingredients that a user has and sug
 // Create an instance of the Anthropic SDK
 const anthropic = new Anthropic({
   // TODO SET ANTHROPIC KEY.
-  apiKey: process.env.ANTHROPIC_API_KEY,
+  apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY,
   dangerouslyAllowBrowser: true,
 })
 
@@ -29,14 +29,14 @@ export async function getRecipeFromChefClaude(ingredientsArray) {
     
     // Call the Claude Project
     const msg = await anthropic.messages.create({
-        model: "[SET MODEL]", // TODO Chose the Claude model
-        max_tokens: "[SET NUMBER OF TOKENS]", // TODO Maximum length of the generated response
+        model: "claude-3-haiku-20240307", // Chose the Claude model
+        max_tokens: 1024, // Maximum length of the generated response
         system: SYSTEM_PROMPT, // Pass in the system instructions
         messages: [
           {
             role: "user", 
             content: `I have ${ingredientsString}. Please give me a recipe you'd recommend I make!`,
-          }
+          },
         ],
     });
   
@@ -47,7 +47,7 @@ export async function getRecipeFromChefClaude(ingredientsArray) {
 
 
 // Create an instance of Hugging Face Inference SDK  // TODO: It seems HfInference is deprecated - Look into it.
-const hf = new HfInference(process.env.HF_ACCESS_TOKEN) //TODO add HuggingFace API key
+// const hf = new HfInference(process.env.HF_ACCESS_TOKEN) //TODO add HuggingFace API key
 
 
 // Function to get a recipe from Mistral (model hosted on Hugging Face)

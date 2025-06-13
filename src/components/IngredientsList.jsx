@@ -1,6 +1,6 @@
 import capitalizeWord from '../utils/capitalize' // Utility to capitalize ingredient names
 
-export default function IngredientsList({ ingredients, toggleRecipeShown }) {
+export default function IngredientsList({ ingredients, getRecipe }) {
 
     // Create list items for each non-empty ingredient with capitalized names
     const ingredientsListItems = ingredients
@@ -24,7 +24,7 @@ export default function IngredientsList({ ingredients, toggleRecipeShown }) {
                         <h3>Ready for a recipe?</h3>
                         <p>Generate a recipe with your list of ingredients.</p>
                         {/* Clicking the button triggers the function to show the recipe */}
-                        <button onClick={toggleRecipeShown}>Get a recipe</button>
+                        <button onClick={getRecipe}>Get a recipe</button>
                     </div>
                 ) : null}
 

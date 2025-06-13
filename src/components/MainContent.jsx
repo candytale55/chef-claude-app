@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // Generates unique IDs for each ingredient
+import { getRecipeFromChefClaude } from '../utils/ai';
+
 
 import ListIngredients from './IngredientsList'; // Component to display the ingredient list and recipe button
 import Recipe from './Recipe'; // Component to display a hardcoded recipe (used for testing)
@@ -15,7 +17,16 @@ export default function IngredientsList() {
   // State: determines whether the hardcoded recipe should be displayed
   const [recipeShown, setRecipeShown] = useState(false);
 
-  // Toggles the visibility of the recipe section
+ 
+  async function getRecipe() {
+    const ingredientNames = ingredients.map(ing => ing.name); // Extract only names
+    const recipeMarkdown = await getRecipeFromChefClaude(ingredientNames);
+    console.log(...ingredients);  // TODO Remove - Only for testing
+    console.log(...ingredientNames); // TODO Remove - Only for testing
+    console.log(recipeMarkdown); // TODO Remove - Only for testing
+  }
+  
+  // TODO REMOVE Toggles the visibility of the recipe section
   function toggleRecipeShown() {
     setRecipeShown(prevShown => !prevShown);
   }
@@ -23,7 +34,6 @@ export default function IngredientsList() {
   // Handles the form submission when user adds a new ingredient
   function addIngredient(e) {
     e.preventDefault(); // Prevents full page reload on form submit
-
     if (!inputValue.trim()) return; // Do not add empty or whitespace-only ingredients
 
     const newIngredient = {
@@ -59,7 +69,7 @@ export default function IngredientsList() {
       {ingredients.filter(i => i.name.trim() !== "").length > 0 ? (
         <ListIngredients
           ingredients={ingredients}
-          toggleRecipeShown={toggleRecipeShown}
+          getRecipe={getRecipe}
         />
       ) : null}
 
