@@ -3,20 +3,21 @@ import Anthropic from "@anthropic-ai/sdk";
 import { HfInference } from "@huggingface/inference";
 
 
-
-
-
 // Define a shared system prompt used by both AI models.
 // This guides the assistant's behavior: use the given ingredients to suggest a recipe,
 // allow for optional additional ingredients, and format the result in markdown.
 
-const SYSTEM_PROMPT = `You are an assistant that receives a list of ingredients that a user has and suggests a recipe they could make with some or all of those ingredients. You don't need to use every ingredient they mention in your recipe. The recipe can include additional ingredients they didn't mention, but try not to include too many extra ingredients. Format your response in markdown to make it easier to render to a web page`
+const SYSTEM_PROMPT = `
+You are an assistant that receives a list of ingredients that a user has and suggests a recipe they could make with some or all of those ingredients. You don't need to use every ingredient they mention in your recipe. The recipe can include additional ingredients they didn't mention, but try not to include too many extra ingredients. Format your response in markdown to make it easier to render to a web page
+`
 
 
 
 // Create an instance of the Anthropic SDK
 const anthropic = new Anthropic({
-    // TODO SET ANTHROPIC KEY.
+  // TODO SET ANTHROPIC KEY.
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  dangerouslyAllowBrowser: true,
 })
 
 
@@ -46,12 +47,10 @@ export async function getRecipeFromChefClaude(ingredientsArray) {
 
 
 // Create an instance of Hugging Face Inference SDK  // TODO: It seems HfInference is deprecated - Look into it.
-const hf = new HfInference(process.env.ADD_ACCESS_TOKEN) //TODO add HuggingFace API key
+const hf = new HfInference(process.env.HF_ACCESS_TOKEN) //TODO add HuggingFace API key
 
 
 // Function to get a recipe from Mistral (model hosted on Hugging Face)
-
-
 export async function getRecipeFromMistral(ingredientsArray) {
   // Join ingredients into a comma-separated string for natural language input
   const ingredientsString = ingredientsArray.join(", "); 
