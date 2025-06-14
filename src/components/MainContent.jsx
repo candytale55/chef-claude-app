@@ -14,22 +14,18 @@ export default function IngredientsList() {
   // State: tracks the current value of the input field
   const [inputValue, setInputValue] = useState("");
 
-  // State: determines whether the hardcoded recipe should be displayed
-  const [recipeShown, setRecipeShown] = useState(false);
+  // TODO Change comment
+  const [recipe, setRecipe] = useState("");
 
  
+  // TODO Change comment
   async function getRecipe() {
     const ingredientNames = ingredients.map(ing => ing.name); // Extract only names
     const recipeMarkdown = await getRecipeFromChefClaude(ingredientNames);
-    console.log(...ingredients);  // TODO Remove - Only for testing
-    console.log(...ingredientNames); // TODO Remove - Only for testing
-    console.log(recipeMarkdown); // TODO Remove - Only for testing
+    setRecipe(recipeMarkdown);
   }
   
-  // TODO REMOVE Toggles the visibility of the recipe section
-  function toggleRecipeShown() {
-    setRecipeShown(prevShown => !prevShown);
-  }
+
 
   // Handles the form submission when user adds a new ingredient
   function addIngredient(e) {
@@ -74,7 +70,7 @@ export default function IngredientsList() {
       ) : null}
 
       {/* === Show Recipe Section if toggle is active === */}
-      {recipeShown && <Recipe />}
+      {recipe && <Recipe recipe={recipe} />}
     </main>
   );
 }
