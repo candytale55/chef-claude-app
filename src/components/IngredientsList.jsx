@@ -1,5 +1,4 @@
 import capitalizeWord from '../utils/capitalize' // Utility to capitalize ingredient names
-
 export default function IngredientsList({ ingredients, getRecipe }) {
 
     // Create list items for each non-empty ingredient with capitalized names
