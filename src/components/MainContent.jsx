@@ -29,7 +29,6 @@ export default function IngredientsList() {
 
   // Handles the form submission when user adds a new ingredient
   function addIngredient(e) {
-    e.preventDefault(); // Prevents full page reload on form submit
     if (!inputValue.trim()) return; // Do not add empty or whitespace-only ingredients
 
     const newIngredient = {
@@ -47,7 +46,7 @@ export default function IngredientsList() {
   return (
     <main>
       {/* === Ingredient Input Form === */}
-      <form className='add-ingredient-form' onSubmit={addIngredient}>
+      <form className='add-ingredient-form' action={addIngredient}>
         <label htmlFor='input-ingredient'></label>
         <input
           id='input-ingredient'
